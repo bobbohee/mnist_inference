@@ -1,7 +1,6 @@
 '''This is inference code for mnist dataset '''
 
 from __future__ import print_function
-import tensorflow.keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
@@ -12,9 +11,12 @@ from PIL import Image
 import numpy as np
 import os
 import tensorflow as tf
+import tf_keras as k3
+import pandas
+
 
 # Recreate the exact same model, including its weights and the optimizer
-model = tf.keras.models.load_model('saved_model/saved_model.pb')
+model = k3.models.load_model('saved_model/')
 
 # Show the model architecture
 model.summary()
@@ -23,7 +25,7 @@ model.summary()
 print()
 print("----Actual test for digits----")
 
-mnist_label_file_path =  "dataset_test/testlabels/t_labels.txt"
+mnist_label_file_path =  "t_labels.txt"
 mnist_label = open(mnist_label_file_path, "r")
 cnt_correct = 0
 for index in range(10):
@@ -37,10 +39,10 @@ for index in range(10):
 	im2arr = im2arr.reshape(1,28,28,1)
 
 	# Predicting the Test set results
-	y_pred = model.predict_classes(im2arr)	#<-- 7 or 4
-	
+	y_pred = model.predict_step(im2arr)	#<-- 7 or 4
+
 	print()
-	pred_label = np.argmax(y_pred) 
+	pred_label = np.argmax(y_pred)
 	print("label = {} --> predicted label= {}".format(label, pred_label))
 
 	#-- compute the accuracy of the preditcion
